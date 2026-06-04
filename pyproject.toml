@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "taichi-matrix"
+version = "0.1.0"
+description = "TaiChi Matrix: Eastern Mathematics-driven AI Infrastructure Toolkit (CCF OSS 2026)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+dependencies = [
+    "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+router = [
+    "taichi-router @ git+https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-router.git",
+]
+mtp = [
+    "taichi-mtp @ git+https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-mtp.git",
+]
+quant = [
+    "taichi-quant @ git+https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-quant.git",
+]
+hex = [
+    "taichi-hexattention @ git+https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-hexattention.git",
+]
+correct = [
+    "taichi-correct @ git+https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-correct.git",
+]
+all = [
+    "taichi-matrix[router,mtp,quant,hex,correct]",
+]
+dev = [
+    "pytest>=7",
+]
+
+[tool.setuptools.packages.find]
+include = ["taichi_matrix*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
