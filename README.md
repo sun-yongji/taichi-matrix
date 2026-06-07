@@ -1,3 +1,5 @@
+﻿[![CI](https://github.com/sun-yongji/taichi-matrix/actions/workflows/ci.yml/badge.svg)](https://github.com/sun-yongji/taichi-matrix/actions/workflows/ci.yml)
+
 # 太极矩阵 · TaiChi Matrix ☯️
 
 > 东方数理驱动的AI基础设施开源工具集 · 华为云杯2026 OPC大赛
