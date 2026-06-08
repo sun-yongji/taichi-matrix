@@ -14,6 +14,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+torch = [
+    "torch>=2.0.0",
+]
 router = [
     "taichi-router @ git+https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-router.git",
 ]
@@ -30,7 +33,7 @@ correct = [
     "taichi-correct @ git+https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-correct.git",
 ]
 all = [
-    "taichi-matrix[router,mtp,quant,hex,correct]",
+    "taichi-matrix[router,mtp,quant,hex,correct,torch]",
 ]
 dev = [
     "pytest>=7",
