@@ -88,7 +88,9 @@ print(f"Route: {result.route_mode}, Confidence: {result.confidence:.1%}")
 
 本项目为「**华为云杯」2026人工智能OPC应用创新大赛**参赛作品。OPC轻量化架构，一人独立开发+部署+运维，全部159个测试通过，100%通过OpenClaw AI平台完成开发（码道智能体全流程参与）。
 
-📄 技术白皮书：[太极矩阵技术白皮书](https://docs.qq.com/aio/DTldDRGpIbGdseG1H)
+📄 技术白皮书（中文）：[太极矩阵技术白皮书](https://docs.qq.com/aio/DTldDRGpIbGdseG1H)
+
+📄 Technical Whitepaper (English): [WHITEPAPER.md](./WHITEPAPER.md)
 
 📐 参赛策略：[华为云OPC大赛策略文档](./research/huawei-opc-competition-strategy.md)
 
