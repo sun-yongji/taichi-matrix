@@ -1,5 +1,3 @@
-﻿[![CI](https://github.com/sun-yongji/taichi-matrix/actions/workflows/ci.yml/badge.svg)](https://github.com/sun-yongji/taichi-matrix/actions/workflows/ci.yml)
-
 # 太极矩阵 · TaiChi Matrix ☯️
 
 > 东方数理驱动的AI基础设施开源工具集 · 华为云杯2026 OPC大赛
@@ -33,7 +31,9 @@
 
 太极矩阵是一套基于**C6六重对称群**数学理论的AI基础设施优化工具链，覆盖MoE路由、多token预测、六边形注意力、熵量化、共识校正五大模块。全部Python实现，Apache 2.0开源，pip一键安装，适配OPC（一人开发者）全场景。
 
-## 五模块速览
+**↓ 点击下方各模块名进入对应独立仓库（源码、测试、文档）**
+
+## 六模块速览
 
 | 模块 | 仓库 | 测试 | 核心创新 |
 |------|------|------|----------|
@@ -42,6 +42,7 @@
 | **M3 Quant** | [taichi-quant](https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-quant) | 28/28 | C6耦合位宽分配，4.3×压缩/87.3%保真度 |
 | **M4 HexAttn** | [taichi-hex](https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-hex) | 26/26 | 六边形拓扑，对角线注意力13%→33.3% |
 | **M5 Correct** | [taichi-correct](https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-correct) | 28/28 | C6本征模校正，噪声降69.7%，置信度98% |
+| **M6 Integrate** | [taichi-matrix](https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix) | 17/17 | 统一流水线，端到端0.79ms，159项测试全覆盖 |
 
 ## 安装
 
