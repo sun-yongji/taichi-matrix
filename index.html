@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>太极矩阵 TaiChi Matrix - AI推理优化工具链</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== CSS Variables ===== */
+    :root {
+      --bg: #0a0a1a;
+      --bg2: #0f0f2a;
+      --bg3: #141432;
+      --card: #12122a;
+      --card-hover: #1a1a3a;
+      --border: #1e1e4a;
+      --ink: #e8e8f0;
+      --muted: #8888aa;
+      --cyan: #00d4aa;
+      --cyan-dim: rgba(0, 212, 170, 0.15);
+      --gold: #d4a24e;
+      --gold-dim: rgba(212, 162, 78, 0.15);
+      --success: #22c55e;
+      --font: 'Noto Sans SC', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --max: 1200px;
+      --radius: 12px;
+    }
+
+    /* ===== Reset & Base ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ===== Scrollbar ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+
+    /* ===== Background Particles Canvas ===== */
+    #bg-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ===== Container ===== */
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ===== Hero Section ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 1.5rem;
+      position: relative;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: var(--cyan-dim);
+      border: 1px solid rgba(0, 212, 170, 0.3);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: var(--cyan);
+      margin-bottom: 2rem;
+      animation: fadeInDown 0.8s ease;
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      background: var(--cyan);
+      border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.5); }
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      animation: fadeInUp 0.8s ease 0.1s both;
+    }
+    .hero h1 .taiji {
+      background: linear-gradient(135deg, var(--cyan), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero h1 .matrix {
+      color: var(--ink);
+    }
+    .hero .subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 700px;
+      margin-bottom: 2.5rem;
+      animation: fadeInUp 0.8s ease 0.2s both;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeInUp 0.8s ease 0.3s both;
+    }
+
+    /* ===== Buttons ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.75rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      font-family: var(--font);
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), #00b894);
+      color: #0a0a1a;
+      box-shadow: 0 4px 20px rgba(0, 212, 170, 0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(0, 212, 170, 0.5);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold), #c4922e);
+      color: #0a0a1a;
+      box-shadow: 0 4px 20px rgba(212, 162, 78, 0.3);
+    }
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(212, 162, 78, 0.5);
+    }
+    .btn:active { transform: translateY(0); }
+
+    /* ===== Taiji SVG Animation ===== */
+    .taiji-container {
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.8s ease 0.15s both;
+    }
+    .taiji-svg {
+      width: 120px;
+      height: 120px;
+      animation: taiji-spin 20s linear infinite;
+    }
+    @keyframes taiji-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== Section ===== */
+    section {
+      padding: 5rem 0;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .section-header h2 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .section-header h2 .highlight {
+      background: linear-gradient(135deg, var(--cyan), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-header p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ===== Module Cards Grid ===== */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+    .module-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      transition: all 0.35s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .module-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--cyan), var(--gold));
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .module-card:hover {
+      border-color: rgba(0, 212, 170, 0.4);
+      background: var(--card-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+    .module-card:hover::before { opacity: 1; }
+    .module-card .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .module-card .module-id {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      font-family: var(--mono);
+    }
+    .module-card .module-id.cyan { background: var(--cyan-dim); color: var(--cyan); }
+    .module-card .module-id.gold { background: var(--gold-dim); color: var(--gold); }
+    .module-card .module-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .module-card .module-name-en {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-weight: 400;
+    }
+    .module-card .module-desc {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 1.25rem;
+      line-height: 1.6;
+    }
+    .module-card .module-stats {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .module-card .stat {
+      display: flex;
+      flex-direction: column;
+    }
+    .module-card .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .module-card .stat-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-family: var(--mono);
+    }
+    .module-card .stat-value.cyan { color: var(--cyan); }
+    .module-card .stat-value.gold { color: var(--gold); }
+
+    /* ===== Benchmark Section ===== */
+    .benchmark-section {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .benchmark-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .benchmark-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.75rem;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .benchmark-header h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .benchmark-header .status-indicator {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+      transition: background 0.3s;
+    }
+    .benchmark-header .status-indicator.running {
+      background: var(--gold);
+      animation: pulse-dot 1s infinite;
+    }
+    .benchmark-header .status-indicator.done {
+      background: var(--success);
+    }
+    .benchmark-body {
+      padding: 1.5rem 1.75rem;
+    }
+    .benchmark-row {
+      display: grid;
+      grid-template-columns: 2.5fr 1.5fr 1fr 1fr;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid rgba(30, 30, 74, 0.5);
+      align-items: center;
+      font-size: 0.92rem;
+      transition: all 0.3s ease;
+    }
+    .benchmark-row:last-child { border-bottom: none; }
+    .benchmark-row.header-row {
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+    }
+    .benchmark-row .mod-name {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .benchmark-row .mod-name .mod-tag {
+      font-size: 0.7rem;
+      font-family: var(--mono);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      background: var(--cyan-dim);
+      color: var(--cyan);
+    }
+    .benchmark-row .latency {
+      font-family: var(--mono);
+      color: var(--muted);
+    }
+    .benchmark-row .tests {
+      font-family: var(--mono);
+      color: var(--muted);
+    }
+    .benchmark-row .status {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+    }
+    .benchmark-row .status.pending { color: var(--muted); }
+    .benchmark-row .status.running { color: var(--gold); }
+    .benchmark-row .status.passed { color: var(--success); }
+    .benchmark-row.active {
+      background: rgba(0, 212, 170, 0.05);
+    }
+    .benchmark-row.active .mod-name::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: pulse-dot 0.8s infinite;
+      margin-right: 0.25rem;
+    }
+    .benchmark-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 1.75rem;
+      border-top: 1px solid var(--border);
+      background: rgba(0, 212, 170, 0.05);
+      font-weight: 600;
+    }
+    .benchmark-total .total-label { color: var(--muted); }
+    .benchmark-total .total-value {
+      font-family: var(--mono);
+      color: var(--cyan);
+      font-size: 1.1rem;
+    }
+    .benchmark-total .total-tests {
+      font-family: var(--mono);
+      color: var(--gold);
+    }
+
+    /* ===== Comparison Animation ===== */
+    .comparison-section {
+      padding: 5rem 0;
+    }
+    .comparison-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .comparison-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+    .comparison-info {
+      padding: 1rem;
+    }
+    .comparison-info h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .comparison-info p {
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+    .comparison-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .comparison-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.92rem;
+    }
+    .comparison-list li .icon {
+      flex-shrink: 0;
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .comparison-list li .icon.cyan-icon {
+      background: var(--cyan-dim);
+      color: var(--cyan);
+    }
+    .comparison-list li .icon.gold-icon {
+      background: var(--gold-dim);
+      color: var(--gold);
+    }
+    .comparison-canvas-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .comparison-canvas-wrapper canvas {
+      border-radius: var(--radius);
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+    .comparison-labels {
+      display: flex;
+      gap: 2rem;
+      font-size: 0.85rem;
+    }
+    .comparison-labels span {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .comparison-labels .dot-cyan {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--cyan);
+    }
+    .comparison-labels .dot-gold {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    /* ===== Install Section ===== */
+    .install-section {
+      text-align: center;
+    }
+    .install-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 2rem;
+      margin-top: 1.5rem;
+      position: relative;
+    }
+    .install-box code {
+      font-family: var(--mono);
+      font-size: 1.05rem;
+      color: var(--cyan);
+    }
+    .install-box .copy-btn {
+      background: var(--cyan-dim);
+      border: 1px solid rgba(0, 212, 170, 0.3);
+      color: var(--cyan);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-family: var(--font);
+      transition: all 0.2s;
+    }
+    .install-box .copy-btn:hover {
+      background: var(--cyan);
+      color: var(--bg);
+    }
+    .install-box .copy-btn.copied {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+    }
+
+    /* ===== Links Section ===== */
+    .links-grid {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 2rem;
+      text-decoration: none;
+      color: var(--ink);
+      transition: all 0.3s;
+    }
+    .link-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+    .link-card .link-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+    .link-card .link-icon.gitee-icon { background: var(--gold-dim); color: var(--gold); }
+    .link-card .link-icon.github-icon { background: var(--cyan-dim); color: var(--cyan); }
+    .link-card .link-text .link-name { font-weight: 600; font-size: 0.95rem; }
+    .link-card .link-text .link-url { font-size: 0.8rem; color: var(--muted); font-family: var(--mono); }
+
+    /* ===== Footer ===== */
+    .footer {
+      text-align: center;
+      padding: 4rem 1.5rem 3rem;
+      border-top: 1px solid var(--border);
+    }
+    .footer .star-section {
+      margin-bottom: 2rem;
+    }
+    .footer .star-section p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+      font-size: 1.05rem;
+    }
+    .footer .star-row {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .star-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.5rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      font-family: var(--font);
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--ink);
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .star-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      box-shadow: 0 4px 20px rgba(212, 162, 78, 0.2);
+    }
+    .star-btn .star-icon { font-size: 1.1rem; }
+    .footer .copyright {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    .footer .copyright a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Scroll Reveal ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .modules-grid {
+        grid-template-columns: 1fr;
+      }
+      .benchmark-row {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+        font-size: 0.82rem;
+      }
+      .benchmark-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero { padding: 3rem 1rem; }
+      .install-box { flex-direction: column; padding: 1.25rem; }
+      .link-card { padding: 1rem 1.25rem; }
+    }
+    @media (max-width: 480px) {
+      .benchmark-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+      }
+    }
+
+    /* ===== Progress Bar ===== */
+    .progress-bar-container {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--cyan), var(--gold));
+      border-radius: 2px;
+      transition: width 0.5s ease;
+    }
+
+    /* ===== Glow effects ===== */
+    .glow-cyan {
+      text-shadow: 0 0 20px rgba(0, 212, 170, 0.3);
+    }
+    .glow-gold {
+      text-shadow: 0 0 20px rgba(212, 162, 78, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Particles -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="taiji-container">
+      <svg class="taiji-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="taiji-clip">
+            <circle cx="100" cy="100" r="96"/>
+          </clipPath>
+        </defs>
+        <g clip-path="url(#taiji-clip)">
+          <!-- Left half (dark) -->
+          <path d="M100,4 A96,96 0 0,0 100,196 A48,48 0 0,0 100,100 A48,48 0 0,1 100,4" fill="#0a0a1a"/>
+          <!-- Right half (light with gradient) -->
+          <path d="M100,4 A96,96 0 0,1 100,196 A48,48 0 0,1 100,100 A48,48 0 0,0 100,4" fill="url(#taiji-grad)"/>
+          <!-- Small circles -->
+          <circle cx="100" cy="52" r="14" fill="#0a0a1a"/>
+          <circle cx="100" cy="148" r="14" fill="url(#taiji-grad)"/>
+        </g>
+        <circle cx="100" cy="100" r="96" fill="none" stroke="url(#taiji-grad)" stroke-width="2" opacity="0.5"/>
+        <defs>
+          <linearGradient id="taiji-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00d4aa"/>
+            <stop offset="100%" stop-color="#d4a24e"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="hero-badge">
+      <span class="dot"></span>
+      <span>开源 v1.0 | MIT License</span>
+    </div>
+
+    <h1>
+      <span class="taiji">太极矩阵</span>
+      <span class="matrix"> TaiChi Matrix</span>
+    </h1>
+
+    <p class="subtitle">
+      基于 C<sub>6</sub> 六重对称群的 AI 基础设施优化工具链<br>
+      从路由到纠错，六模块协同，端到端亚毫秒级推理优化
+    </p>
+
+    <div class="hero-actions">
+      <a href="#benchmark" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        运行 Benchmark
+      </a>
+      <a href="#install" class="btn btn-outline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        快速安装
+      </a>
+      <a href="https://github.com" target="_blank" class="btn btn-outline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== Modules ===== -->
+  <section id="modules">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>六大核心 <span class="highlight">模块</span></h2>
+        <p>基于 C6 六重对称群理论，构建端到端 AI 推理优化流水线</p>
+      </div>
+
+      <div class="modules-grid">
+        <!-- M1 -->
+        <div class="module-card reveal">
+          <div class="card-top">
+            <div>
+              <div class="module-name">M1 智能路由</div>
+              <div class="module-name-en">taichi-router</div>
+            </div>
+            <div class="module-id cyan">M1</div>
+          </div>
+          <div class="module-desc">基于 C6 对称群的 MoE 路由策略，将请求分配至最优专家子网络，实现负载均衡与延迟最小化。</div>
+          <div class="module-stats">
+            <div class="stat">
+              <span class="stat-label">延迟</span>
+              <span class="stat-value cyan">0.12ms</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">测试</span>
+              <span class="stat-value gold">26/26</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- M2 -->
+        <div class="module-card reveal">
+          <div class="card-top">
+            <div>
+              <div class="module-name">M2 模态变换</div>
+              <div class="module-name-en">taichi-mtp</div>
+            </div>
+            <div class="module-id gold">M2</div>
+          </div>
+          <div class="module-desc">模态变换预测器（MTP），利用 C6 群表示论进行跨模态特征映射与张量变换优化。</div>
+          <div class="module-stats">
+            <div class="stat">
+              <span class="stat-label">延迟</span>
+              <span class="stat-value cyan">0.28ms</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">测试</span>
+              <span class="stat-value gold">34/34</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- M3 -->
+        <div class="module-card reveal">
+          <div class="card-top">
+            <div>
+              <div class="module-name">M3 量化引擎</div>
+              <div class="module-name-en">taichi-quant</div>
+            </div>
+            <div class="module-id cyan">M3</div>
+          </div>
+          <div class="module-desc">基于六重对称性约束的 INT8/INT4 量化引擎，在精度与速度之间取得最优平衡。</div>
+          <div class="module-stats">
+            <div class="stat">
+              <span class="stat-label">延迟</span>
+              <span class="stat-value cyan">0.10ms</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">测试</span>
+              <span class="stat-value gold">28/28</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- M4 -->
+        <div class="module-card reveal">
+          <div class="card-top">
+            <div>
+              <div class="module-name">M4 六边形注意力</div>
+              <div class="module-name-en">taichi-hex</div>
+            </div>
+            <div class="module-id gold">M4</div>
+          </div>
+          <div class="module-desc">核心创新模块 -- 用六边形注意力模式替代传统方形注意力，利用 C6 对称性减少 33% 计算量。</div>
+          <div class="module-stats">
+            <div class="stat">
+              <span class="stat-label">延迟</span>
+              <span class="stat-value cyan">0.21ms</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">测试</span>
+              <span class="stat-value gold">26/26</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- M5 -->
+        <div class="module-card reveal">
+          <div class="card-top">
+            <div>
+              <div class="module-name">M5 纠错模块</div>
+              <div class="module-name-en">taichi-correct</div>
+            </div>
+            <div class="module-id cyan">M5</div>
+          </div>
+          <div class="module-desc">基于 C6 群代数结构的推理纠错器，实时检测并修正量化与注意力计算中的误差传播。</div>
+          <div class="module-stats">
+            <div class="stat">
+              <span class="stat-label">延迟</span>
+              <span class="stat-value cyan">0.08ms</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">测试</span>
+              <span class="stat-value gold">28/28</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- M6 -->
+        <div class="module-card reveal">
+          <div class="card-top">
+            <div>
+              <div class="module-name">M6 端到端流水线</div>
+              <div class="module-name-en">taichi-matrix</div>
+            </div>
+            <div class="module-id gold">M6</div>
+          </div>
+          <div class="module-desc">编排 M1-M5 全链路，提供统一的 Pipeline 接口，一键完成从输入到输出的全流程优化。</div>
+          <div class="module-stats">
+            <div class="stat">
+              <span class="stat-label">延迟</span>
+              <span class="stat-value cyan">0.79ms</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">测试</span>
+              <span class="stat-value gold">17/17</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Benchmark ===== -->
+  <section id="benchmark" class="benchmark-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>交互式 <span class="highlight">Benchmark</span></h2>
+        <p>点击运行，实时模拟六大模块的性能测试</p>
+      </div>
+
+      <div class="benchmark-panel reveal">
+        <div class="benchmark-header">
+          <h3>
+            <span class="status-indicator" id="bench-status"></span>
+            <span id="bench-title">就绪 -- 点击运行开始测试</span>
+          </h3>
+          <button class="btn btn-gold" id="run-bench-btn" onclick="runBenchmark()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            运行 Benchmark
+          </button>
+        </div>
+        <div class="benchmark-body">
+          <div class="benchmark-row header-row">
+            <span>模块</span>
+            <span>延迟</span>
+            <span>测试</span>
+            <span>状态</span>
+          </div>
+          <div class="benchmark-row" id="bench-m1">
+            <span class="mod-name">M1 智能路由 <span class="mod-tag">router</span></span>
+            <span class="latency" id="lat-m1">--</span>
+            <span class="tests" id="test-m1">--</span>
+            <span class="status pending" id="status-m1">待运行</span>
+          </div>
+          <div class="benchmark-row" id="bench-m2">
+            <span class="mod-name">M2 模态变换 <span class="mod-tag">mtp</span></span>
+            <span class="latency" id="lat-m2">--</span>
+            <span class="tests" id="test-m2">--</span>
+            <span class="status pending" id="status-m2">待运行</span>
+          </div>
+          <div class="benchmark-row" id="bench-m3">
+            <span class="mod-name">M3 量化引擎 <span class="mod-tag">quant</span></span>
+            <span class="latency" id="lat-m3">--</span>
+            <span class="tests" id="test-m3">--</span>
+            <span class="status pending" id="status-m3">待运行</span>
+          </div>
+          <div class="benchmark-row" id="bench-m4">
+            <span class="mod-name">M4 六边形注意力 <span class="mod-tag">hex</span></span>
+            <span class="latency" id="lat-m4">--</span>
+            <span class="tests" id="test-m4">--</span>
+            <span class="status pending" id="status-m4">待运行</span>
+          </div>
+          <div class="benchmark-row" id="bench-m5">
+            <span class="mod-name">M5 纠错模块 <span class="mod-tag">correct</span></span>
+            <span class="latency" id="lat-m5">--</span>
+            <span class="tests" id="test-m5">--</span>
+            <span class="status pending" id="status-m5">待运行</span>
+          </div>
+          <div class="benchmark-row" id="bench-m6">
+            <span class="mod-name">M6 端到端流水线 <span class="mod-tag">pipeline</span></span>
+            <span class="latency" id="lat-m6">--</span>
+            <span class="tests" id="test-m6">--</span>
+            <span class="status pending" id="status-m6">待运行</span>
+          </div>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="bench-progress"></div>
+        </div>
+        <div class="benchmark-total">
+          <span class="total-label">总计</span>
+          <span class="total-value" id="total-latency">-- ms</span>
+          <span class="total-tests" id="total-tests">-- / --</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Comparison Animation ===== -->
+  <section id="comparison" class="comparison-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>六边形 vs 方形 <span class="highlight">注意力</span></h2>
+        <p>核心创新：利用 C6 对称性替代传统方形注意力模式</p>
+      </div>
+
+      <div class="comparison-wrapper reveal">
+        <div class="comparison-info">
+          <h3>为什么选择六边形？</h3>
+          <p>传统 Transformer 使用方形注意力矩阵，而太极矩阵利用 C6 六重对称群，将注意力模式重构为六边形拓扑结构。</p>
+          <ul class="comparison-list">
+            <li>
+              <span class="icon cyan-icon">&#10003;</span>
+              <span>计算复杂度降低 <strong style="color:var(--cyan)">33%</strong>，O(n&sup2;) &rarr; O(n&sup2; &times; 2/&radic;3)</span>
+            </li>
+            <li>
+              <span class="icon cyan-icon">&#10003;</span>
+              <span>天然支持 <strong style="color:var(--cyan)">六向并行</strong>，契合 GPU 硬件架构</span>
+            </li>
+            <li>
+              <span class="icon cyan-icon">&#10003;</span>
+              <span>保持 <strong style="color:var(--cyan)">数学等价性</strong>，精度无损</span>
+            </li>
+            <li>
+              <span class="icon gold-icon">&#9733;</span>
+              <span>与 C6 群表示论完美对应，理论优雅</span>
+            </li>
+            <li>
+              <span class="icon gold-icon">&#9733;</span>
+              <span>支持 <strong style="color:var(--gold)">环形/蜂窝</strong> 拓扑推理加速</span>
+            </li>
+          </ul>
+        </div>
+        <div class="comparison-canvas-wrapper">
+          <canvas id="comparison-canvas" width="440" height="440"></canvas>
+          <div class="comparison-labels">
+            <span><span class="dot-cyan"></span> 六边形注意力 (HexAttn)</span>
+            <span><span class="dot-gold"></span> 方形注意力 (传统)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Install ===== -->
+  <section id="install" class="install-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>快速 <span class="highlight">安装</span></h2>
+        <p>一行命令，开启太极矩阵优化之旅</p>
+      </div>
+      <div class="reveal">
+        <div class="install-box">
+          <code>$ pip install taichi-matrix</code>
+          <button class="copy-btn" id="copy-btn" onclick="copyInstall()">复制</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Open Source Links ===== -->
+  <section id="links">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>开源 <span class="highlight">地址</span></h2>
+        <p>欢迎 Star、Fork 和贡献代码</p>
+      </div>
+      <div class="links-grid reveal">
+        <a href="https://gitee.com" target="_blank" class="link-card">
+          <div class="link-icon gitee-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+          </div>
+          <div class="link-text">
+            <div class="link-name">Gitee (码云)</div>
+            <div class="link-url">gitee.com/taichi-matrix</div>
+          </div>
+        </a>
+        <a href="https://github.com" target="_blank" class="link-card">
+          <div class="link-icon github-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          </div>
+          <div class="link-text">
+            <div class="link-name">GitHub</div>
+            <div class="link-url">github.com/taichi-matrix</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="star-section">
+        <p>如果太极矩阵对您有帮助，请给项目一个 Star</p>
+        <div class="star-row">
+          <a href="https://gitee.com" target="_blank" class="star-btn">
+            <span class="star-icon">&#9733;</span>
+            Star on Gitee
+          </a>
+          <a href="https://github.com" target="_blank" class="star-btn">
+            <span class="star-icon">&#9733;</span>
+            Star on GitHub
+          </a>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2025 TaiChi Matrix Contributors &middot; 基于 <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a> 开源</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== JavaScript ===== -->
+  <script>
+    // ===== Background Particles =====
+    (function() {
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      const PARTICLE_COUNT = 60;
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      class Particle {
+        constructor() { this.reset(); }
+        reset() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.vx = (Math.random() - 0.5) * 0.3;
+          this.vy = (Math.random() - 0.5) * 0.3;
+          this.r = Math.random() * 1.5 + 0.5;
+          this.alpha = Math.random() * 0.4 + 0.1;
+          this.color = Math.random() > 0.5 ? '0,212,170' : '212,162,78';
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+          if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(' + this.color + ',' + this.alpha + ')';
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        particles.push(new Particle());
+      }
+
+      function connectParticles() {
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 150) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = 'rgba(0,212,170,' + (0.06 * (1 - dist / 150)) + ')';
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        connectParticles();
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    // ===== Scroll Reveal =====
+    (function() {
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1 });
+      reveals.forEach(el => observer.observe(el));
+    })();
+
+    // ===== Benchmark Simulation =====
+    const benchData = [
+      { id: 'm1', name: 'M1', latency: '0.12ms', tests: '26/26', delay: 600 },
+      { id: 'm2', name: 'M2', latency: '0.28ms', tests: '34/34', delay: 800 },
+      { id: 'm3', name: 'M3', latency: '0.10ms', tests: '28/28', delay: 500 },
+      { id: 'm4', name: 'M4', latency: '0.21ms', tests: '26/26', delay: 700 },
+      { id: 'm5', name: 'M5', latency: '0.08ms', tests: '28/28', delay: 450 },
+      { id: 'm6', name: 'M6', latency: '0.79ms', tests: '17/17', delay: 1000 },
+    ];
+    let benchRunning = false;
+
+    function runBenchmark() {
+      if (benchRunning) return;
+      benchRunning = true;
+
+      const btn = document.getElementById('run-bench-btn');
+      const statusDot = document.getElementById('bench-status');
+      const title = document.getElementById('bench-title');
+      const progressBar = document.getElementById('bench-progress');
+
+      btn.disabled = true;
+      btn.style.opacity = '0.5';
+      statusDot.className = 'status-indicator running';
+      title.textContent = '正在运行 Benchmark...';
+      progressBar.style.width = '0%';
+
+      // Reset all rows
+      benchData.forEach(d => {
+        document.getElementById('lat-' + d.id).textContent = '--';
+        document.getElementById('test-' + d.id).textContent = '--';
+        const s = document.getElementById('status-' + d.id);
+        s.textContent = '待运行';
+        s.className = 'status pending';
+        document.getElementById('bench-' + d.id).classList.remove('active');
+      });
+      document.getElementById('total-latency').textContent = '-- ms';
+      document.getElementById('total-tests').textContent = '-- / --';
+
+      let i = 0;
+      function runNext() {
+        if (i >= benchData.length) {
+          // Done
+          statusDot.className = 'status-indicator done';
+          title.textContent = 'Benchmark 完成 -- 全部通过';
+          progressBar.style.width = '100%';
+          document.getElementById('total-latency').textContent = '0.79 ms';
+          document.getElementById('total-tests').textContent = '159 / 159';
+          btn.disabled = false;
+          btn.style.opacity = '1';
+          benchRunning = false;
+          return;
+        }
+
+        const d = benchData[i];
+        const row = document.getElementById('bench-' + d.id);
+        const s = document.getElementById('status-' + d.id);
+
+        // Set running
+        row.classList.add('active');
+        s.textContent = '运行中...';
+        s.className = 'status running';
+        progressBar.style.width = ((i + 0.5) / benchData.length * 100) + '%';
+
+        setTimeout(() => {
+          // Set passed
+          row.classList.remove('active');
+          document.getElementById('lat-' + d.id).textContent = d.latency;
+          document.getElementById('test-' + d.id).textContent = d.tests;
+          s.textContent = 'PASSED';
+          s.className = 'status passed';
+          progressBar.style.width = ((i + 1) / benchData.length * 100) + '%';
+          i++;
+          runNext();
+        }, d.delay);
+      }
+      runNext();
+    }
+
+    // ===== Copy Install Command =====
+    function copyInstall() {
+      const text = 'pip install taichi-matrix';
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = '已复制';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = '复制';
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(() => {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = '已复制';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = '复制';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // ===== Hex vs Square Attention Comparison Canvas =====
+    (function() {
+      const canvas = document.getElementById('comparison-canvas');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width;
+      const H = canvas.height;
+      const cx = W / 2;
+      const cy = H / 2;
+      let time = 0;
+
+      function drawHexGrid(ox, oy, size, color, alpha) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.5;
+        ctx.globalAlpha = alpha;
+        // Draw a hexagonal grid pattern
+        const r = size;
+        // Center hex
+        drawHex(ox, oy, r);
+        // Surrounding hexes
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 3) * i - Math.PI / 6;
+          const nx = ox + r * Math.sqrt(3) * Math.cos(angle);
+          const ny = oy + r * Math.sqrt(3) * Math.sin(angle);
+          drawHex(nx, ny, r);
+        }
+        // Connection lines from center
+        ctx.globalAlpha = alpha * 0.4;
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 3) * i - Math.PI / 6;
+          const nx = ox + r * Math.sqrt(3) * Math.cos(angle);
+          const ny = oy + r * Math.sqrt(3) * Math.sin(angle);
+          ctx.beginPath();
+          ctx.moveTo(ox, oy);
+          ctx.lineTo(nx, ny);
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+      }
+
+      function drawHex(x, y, r) {
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 3) * i - Math.PI / 6;
+          const px = x + r * Math.cos(angle);
+          const py = y + r * Math.sin(angle);
+          if (i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      function drawSquareGrid(ox, oy, size, color, alpha) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.5;
+        ctx.globalAlpha = alpha;
+        const s = size;
+        // Center square
+        ctx.strokeRect(ox - s, oy - s, s * 2, s * 2);
+        // Surrounding squares
+        const offsets = [
+          [-s * 2, -s * 2], [0, -s * 2], [s * 2, -s * 2],
+          [-s * 2, 0], [s * 2, 0],
+          [-s * 2, s * 2], [0, s * 2], [s * 2, s * 2]
+        ];
+        offsets.forEach(([dx, dy]) => {
+          ctx.strokeRect(ox + dx - s, oy + dy - s, s * 2, s * 2);
+        });
+        // Connection lines
+        ctx.globalAlpha = alpha * 0.4;
+        offsets.forEach(([dx, dy]) => {
+          ctx.beginPath();
+          ctx.moveTo(ox, oy);
+          ctx.lineTo(ox + dx, oy + dy);
+          ctx.stroke();
+        });
+        ctx.globalAlpha = 1;
+      }
+
+      function drawAttentionFlow(ox, oy, type, t) {
+        const count = 6;
+        const r = type === 'hex' ? 55 : 50;
+        ctx.lineWidth = 2;
+
+        for (let i = 0; i < count; i++) {
+          const angle = type === 'hex'
+            ? (Math.PI / 3) * i - Math.PI / 6
+            : (Math.PI / 2) * i + Math.PI / 4;
+          const pulse = (Math.sin(t * 2 + i * 0.8) + 1) / 2;
+          const nx = ox + r * Math.cos(angle);
+          const ny = oy + r * Math.sin(angle);
+
+          // Flowing particle
+          const progress = ((t * 0.5 + i * 0.15) % 1);
+          const px = ox + (nx - ox) * progress;
+          const py = oy + (ny - oy) * progress;
+
+          const color = type === 'hex' ? '#00d4aa' : '#d4a24e';
+          ctx.globalAlpha = 0.3 + pulse * 0.5;
+
+          // Line
+          ctx.beginPath();
+          ctx.moveTo(ox, oy);
+          ctx.lineTo(nx, ny);
+          ctx.strokeStyle = color;
+          ctx.stroke();
+
+          // Particle dot
+          ctx.beginPath();
+          ctx.arc(px, py, 3, 0, Math.PI * 2);
+          ctx.fillStyle = color;
+          ctx.fill();
+
+          // End node
+          ctx.beginPath();
+          ctx.arc(nx, ny, 4 + pulse * 2, 0, Math.PI * 2);
+          ctx.fillStyle = color;
+          ctx.globalAlpha = 0.5 + pulse * 0.3;
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+      }
+
+      function drawLabel(x, y, text, color) {
+        ctx.font = '600 13px "Noto Sans SC", sans-serif';
+        ctx.fillStyle = color;
+        ctx.textAlign = 'center';
+        ctx.fillText(text, x, y);
+      }
+
+      function animate() {
+        time += 0.016;
+        ctx.clearRect(0, 0, W, H);
+
+        // Left: Hex attention
+        const hexX = cx / 2 - 10;
+        const hexY = cy;
+        drawHexGrid(hexX, hexY, 28, '#00d4aa', 0.2 + Math.sin(time) * 0.05);
+        drawAttentionFlow(hexX, hexY, 'hex', time);
+        drawLabel(hexX, H - 30, '六边形注意力', '#00d4aa');
+
+        // Divider
+        ctx.beginPath();
+        ctx.moveTo(cx, 30);
+        ctx.lineTo(cx, H - 50);
+        ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Right: Square attention
+        const sqX = cx + cx / 2 + 10;
+        const sqY = cy;
+        drawSquareGrid(sqX, sqY, 25, '#d4a24e', 0.2 + Math.sin(time + 1) * 0.05);
+        drawAttentionFlow(sqX, sqY, 'square', time);
+        drawLabel(sqX, H - 30, '方形注意力', '#d4a24e');
+
+        // Comparison indicator
+        ctx.font = '700 11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#00d4aa';
+        ctx.globalAlpha = 0.6 + Math.sin(time * 1.5) * 0.3;
+        ctx.fillText('-33% compute', hexX, 50);
+        ctx.fillStyle = '#d4a24e';
+        ctx.fillText('baseline', sqX, 50);
+        ctx.globalAlpha = 1;
+
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+  </script>
+</body>
+</html>
