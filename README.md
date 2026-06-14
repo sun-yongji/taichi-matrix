@@ -5,6 +5,10 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
 [![Tests](https://img.shields.io/badge/tests-159/159-brightgreen.svg)]()
 [![License](https://img.shields.io/badge/license-CC--BY--SA--4.0-green.svg)](LICENSE)
+[![Gitee Stars](https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix/badge/star.svg?theme=white)](https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/sun-yongji/taichi-matrix?style=social)](https://github.com/sun-yongji/taichi-matrix)
+
+**如果这个项目对你有帮助，请点 Star 支持！你的每一个 Star 都是对我们最大的鼓励 ⭐**
 
 ## 六大模块
 
@@ -59,6 +63,20 @@
 - Technical Whitepaper (English)：WHITEPAPER.md
 - 参赛策略：research/huawei-opc-competition-strategy.md
 
+## 相关阅读
+
+- [技术博客：我用六边形拓扑重构了 MoE 路由](https://zhuanlan.zhihu.com/)（知乎）
+- [3分钟Demo视频](https://www.bilibili.com/)（B站）
+- [参赛复盘：一人开发者如何构建全栈AI工具链](research/huawei-opc-competition-strategy.md)
+
+## 交流与反馈
+
+- 技术讨论：欢迎提 [Issue](https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix/issues)
+- 加入共建：查看 [CONTRIBUTING.md](CONTRIBUTING.md)
+- 联系作者：sun-yongji@example.com
+
 ## 许可
 
 CC-BY-SA-4.0 · 太极量子团队 · 2026 · 华为云杯OPC大赛
+
+> **如果觉得有用，请点 ⭐ Star 支持！让更多人看到东方智慧在AI领域的应用。**
