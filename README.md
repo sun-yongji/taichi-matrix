@@ -30,6 +30,13 @@
 - **M6 Integrate 集成测试** (17/17测试) — 统一流水线，端到端0.79ms，159项全覆盖
   https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix
 
+## 在线演示
+
+> 在线体验：https://sun-yongji.github.io/taichi-matrix/
+> （点击即可体验交互式Benchmark、六边形vs方形注意力对比，无需安装）
+
+![太极矩阵Demo演示](docs/demo-screenshot.png)
+
 ## 简介
 
 太极矩阵覆盖 MoE 路由、多 token 预测、六边形注意力、熵量化、共识校正五大功能，全部 Python 实现，CC-BY-SA-4.0 开源，pip 一键安装，适配 OPC（一人开发者）全场景。所有模块共享 C6 六重对称群数学底层：六角耦合矩阵定义信息流拓扑，不可约表示映射（omega^0 稳态 / omega^2 周期 / omega^1 全周 / omega^3 对偶），黄金比补偿因子 0.0618 用于熵平衡。
