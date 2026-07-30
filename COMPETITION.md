@@ -101,3 +101,8 @@ taichi-hex-ascend/
 ---
 
 *参赛作品 · 太极量子团队 · 2025*
+
+## 代码仓库
+
+- GitCode（昇腾社区）：https://gitcode.com/sun-yongji-yuyubenyuan_admin/taichi-matrix
+- Gitee（镜像）：https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix

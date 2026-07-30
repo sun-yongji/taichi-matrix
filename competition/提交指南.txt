@@ -14,7 +14,7 @@ https://www.hiascend.com/developer/contests/details/41ffbad2024e4ccfa43520c57ffa
 | **作品简介** | 基于易学六爻对称性（C6六重对称群）的原创六边形注意力算子。6个注意力头对应六爻位置，每头只计算1/6对角线，合起来全序列覆盖。相比传统方形注意力，理论计算量减少83%，对角线覆盖提升至33.3%。 |
 | **操作系统** | EulerOS 2.10 |
 | **CANN版本** | 8.5.0 |
-| **代码仓库** | https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix |
+| **代码仓库** | https://gitcode.com/sun-yongji-yuyubenyuan_admin/taichi-matrix |
 | **自备算力** | 是 / 否（根据实际情况选） |
 
 ## 创意说明（作品介绍，可以复制这段）

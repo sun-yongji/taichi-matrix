@@ -33,4 +33,4 @@ submit.sh                # 打包脚本
 
 - 作品名称：太极矩阵 — C6六边形注意力算子
 - 团队：太极量子团队
-- 作品仓库：https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix
+- 作品仓库：https://gitcode.com/sun-yongji-yuyubenyuan_admin/taichi-matrix
