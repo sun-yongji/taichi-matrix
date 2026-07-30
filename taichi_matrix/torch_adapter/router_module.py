@@ -33,6 +33,7 @@ from taichi_matrix.constants import (
     STEADY_THRESHOLD,
     C6_ORDER,
 )
+from taichi_matrix.device_utils import get_device
 
 
 @dataclass
@@ -76,6 +77,7 @@ class TaiChiRouterModule(nn.Module):
         self.entropy_comp = entropy_comp
 
         # Energy projection: 6 → num_experts
+        self.device = get_device()
         self.energy_proj = nn.Linear(6, num_experts, bias=False)
         # Per-expert shallow transform for demonstration
         self.expert_fcs = nn.ModuleList(

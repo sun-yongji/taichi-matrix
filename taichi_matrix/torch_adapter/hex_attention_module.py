@@ -38,6 +38,7 @@ from taichi_matrix.constants import (
     C6_ROTATION_ANGLE,
     GOLDEN_RATIO_COMPENSATION,
 )
+from taichi_matrix.device_utils import get_device
 
 
 @dataclass
@@ -80,6 +81,7 @@ class HexAttentionModule(nn.Module):
         self.num_heads = num_heads
         self.head_dim = d_model // num_heads
         self.use_coupling = use_coupling
+        self.device = get_device()
 
         self.q_proj = nn.Linear(d_model, d_model, bias=False)
         self.k_proj = nn.Linear(d_model, d_model, bias=False)

@@ -84,6 +84,11 @@ class TaiChiPipeline:
         "correct": "taichi_correct",
     }
 
+    # Fallback package names (in case sub-modules use different names)
+    _STAGE_PACKAGES_FALLBACK = {
+        "hex": "taichi_hex",
+    }
+
     def __init__(
         self,
         enable: Optional[List[str]] = None,
@@ -99,6 +104,11 @@ class TaiChiPipeline:
             pkg = self._STAGE_PACKAGES[stage]
             if _try_import(pkg, pkg):
                 self.available.append(stage)
+            else:
+                # Try fallback package name
+                fallback = self._STAGE_PACKAGES_FALLBACK.get(stage)
+                if fallback and _try_import(fallback, fallback):
+                    self.available.append(stage)
 
         if enable is None:
             self.enabled = list(self.available)

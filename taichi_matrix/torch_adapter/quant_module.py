@@ -31,6 +31,7 @@ from taichi_matrix.constants import (
     CYCLIC_CONSTANT_142857,
     GOLDEN_RATIO_COMPENSATION,
 )
+from taichi_matrix.device_utils import get_device
 
 
 @dataclass
@@ -73,6 +74,7 @@ class TaiChiQuantModule(nn.Module):
         self.base_bit_width = base_bit_width
         self.num_bit_options = num_bit_options
         self.coupling_strength = coupling_strength
+        self.device = get_device()
 
         # Learnable layer importance scores for bit-width allocation
         self.importance_proj = nn.Sequential(

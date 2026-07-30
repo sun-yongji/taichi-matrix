@@ -24,6 +24,7 @@ import torch
 import torch.nn as nn
 
 from taichi_matrix.constants import C6_ORDER, GOLDEN_RATIO_COMPENSATION
+from taichi_matrix.device_utils import get_device
 
 
 @dataclass
@@ -66,6 +67,7 @@ class TaiChiTorchPipeline(nn.Module):
         super().__init__()
         self.hidden_dim = hidden_dim
         self.vocab_size = vocab_size
+        self.device = get_device()
 
         if enable is None:
             enable = list(self._ALL_STAGES)
