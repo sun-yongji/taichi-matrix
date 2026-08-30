@@ -34,6 +34,7 @@ from taichi_matrix.constants import (
     C6_ORDER,
     GOLDEN_RATIO_COMPENSATION,
 )
+from taichi_matrix.device_utils import get_device
 
 
 @dataclass
@@ -75,6 +76,7 @@ class TaiChiCorrectModule(nn.Module):
         self.anomaly_threshold = anomaly_threshold
         self.damping_factor = damping_factor
         self.num_iterations = num_iterations
+        self.device = get_device()
 
         # Anomaly detection: project residual energy to scalar
         self.anomaly_detector = nn.Sequential(

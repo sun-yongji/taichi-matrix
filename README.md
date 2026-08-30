@@ -7,6 +7,7 @@
 [![License](https://img.shields.io/badge/license-Apache--2.0-green.svg)](LICENSE)
 [![Gitee Stars](https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix/badge/star.svg?theme=white)](https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix/stargazers)
 [![GitHub Stars](https://img.shields.io/github/stars/sun-yongji/taichi-matrix?style=social)](https://github.com/sun-yongji/taichi-matrix)
+[![GitCode](https://img.shields.io/badge/GitCode-昇腾社区-brightgreen)](https://gitcode.com/sun-yongji-yuyubenyuan_admin/taichi-matrix)
 
 **如果这个项目对你有帮助，请点 Star 支持！你的每一个 Star 都是对我们最大的鼓励 ⭐**
 
@@ -43,9 +44,19 @@
 
 ## 安装
 
-    pip install taichi-matrix          # 最小安装（仅 numpy）
-    pip install "taichi-matrix[all]"   # 全量安装
-    pip install "taichi-matrix[router,mtp]"  # 按需安装
+### 一行命令安装（推荐）
+
+    pip install git+https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix.git
+
+### 需要 PyTorch 支持
+
+    pip install "taichi-matrix[torch] @ git+https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix.git"
+
+### 或下载 whl 离线安装
+
+从 [Releases] 下载 .whl 文件后：
+
+    pip install taichi_matrix-0.1.0-py3-none-any.whl
 
 ## 使用
 

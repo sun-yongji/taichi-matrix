@@ -1,0 +1,44 @@
+# TaiChi Matrix — Ascend NPU Inference
+#
+# Build:
+#   docker build -t taichi-matrix:ascend .
+#
+# Run:
+#   docker run -it --rm \
+#     --device=/dev/davinci0 \
+#     --device=/dev/davinci_manager \
+#     --device=/dev/hisi_hdc \
+#     -p 8000:8000 \
+#     taichi-matrix:ascend
+
+FROM ascendai/pytorch:torch_npu2.6.0-3.0.0-ubuntu22.04 AS base
+
+# System dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+
+# Copy project
+COPY . /workspace/taichi-matrix
+
+# Install
+RUN pip install --no-cache-dir -e "/workspace/taichi-matrix[ascends,server,dev]"
+
+# Verify
+RUN python -c "
+from taichi_matrix.device_utils import device_info
+info = device_info()
+print(f'Device: {info[\"device\"]}')
+print(f'Ascend: {info[\"ascend_available\"]}')
+"
+
+# Default: start API server
+EXPOSE 8000
+CMD ["python", "-m", "taichi_matrix.api_server", "--host", "0.0.0.0", "--port", "8000"]
+
+# ---- Test Stage ----
+FROM base AS test
+RUN python -m pytest /workspace/taichi-matrix/tests/ -v

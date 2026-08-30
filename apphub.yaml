@@ -1,0 +1,47 @@
+version: "1.0"
+kind: "CloudApplication"
+metadata:
+  name: "taichi-matrix-aftershock-api"
+  version: "0.1.0"
+  description: "太极矩阵地震余震预测 API - 基于 C6 六重对称群"
+spec:
+  # 部署形态：单实例容器
+  replicas: 1
+
+  # 镜像来源：使用本仓库根目录的 Dockerfile 构建
+  image:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+  # 容器配置
+  container:
+    port: 8000
+    env:
+      - name: "API_PORT"
+        value: "8000"
+      - name: "PYTHONUNBUFFERED"
+        value: "1"
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "512Mi"
+      limits:
+        cpu: "1000m"
+        memory: "1Gi"
+
+  # 健康探针
+  healthCheck:
+    httpGet:
+      path: "/health"
+      port: 8000
+    initialDelaySeconds: 10
+    periodSeconds: 30
+    timeoutSeconds: 5
+    failureThreshold: 3
+
+  # 外部访问
+  service:
+    type: "LoadBalancer"
+    port: 8000
+    targetPort: 8000

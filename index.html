@@ -714,6 +714,134 @@
     .glow-gold {
       text-shadow: 0 0 20px rgba(212, 162, 78, 0.3);
     }
+
+    /* ===== Quantum QAOA Section ===== */
+    .quantum-section {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .quantum-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .quantum-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+    .quantum-info h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .quantum-info p {
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+    .quantum-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .quantum-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.92rem;
+    }
+    .quantum-features li .icon {
+      flex-shrink: 0;
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .quantum-canvas-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .quantum-canvas-wrapper canvas {
+      border-radius: var(--radius);
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+    .quantum-controls {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .quantum-control-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-family: var(--font);
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--ink);
+      transition: all 0.2s;
+    }
+    .quantum-control-btn:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+    .quantum-control-btn.active {
+      background: var(--cyan-dim);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+    .quantum-legend {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .quantum-legend span {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .legend-dot.hadamard { background: #00d4aa; }
+    .legend-dot.rz { background: #d4a24e; }
+    .legend-dot.rx { background: #ff6b6b; }
+    .legend-dot.cnot { background: #4ecdc4; }
+    .legend-dot.warm { background: #ffe66d; }
+
+    /* QAOA layer indicator */
+    .layer-indicator {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+    .layer-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all 0.3s;
+    }
+    .layer-dot.active {
+      background: var(--cyan);
+      box-shadow: 0 0 8px rgba(0, 212, 170, 0.5);
+    }
   </style>
 </head>
 <body>
@@ -1039,6 +1167,63 @@
           <div class="comparison-labels">
             <span><span class="dot-cyan"></span> 六边形注意力 (HexAttn)</span>
             <span><span class="dot-gold"></span> 方形注意力 (传统)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Quantum QAOA Demo ===== -->
+  <section id="quantum" class="quantum-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>量子 QAOA <span class="highlight">演示</span></h2>
+        <p>基于太极场C6六重对称群的量子组合优化线路可视化</p>
+      </div>
+
+      <div class="quantum-wrapper reveal">
+        <div class="quantum-info">
+          <h3>太极场量子优化算法</h3>
+          <p>华为云2026量子组合优化大赛核心算法。将C6六重对称性嵌入QAOA量子线路，通过60°相位调制增强解空间探索能力。</p>
+          <ul class="quantum-features">
+            <li>
+              <span class="icon cyan-icon">&#10003;</span>
+              <span><strong style="color:var(--cyan)">3层QAOA</strong> 递阶采样（600/200/200 shots）</span>
+            </li>
+            <li>
+              <span class="icon cyan-icon">&#10003;</span>
+              <span><strong style="color:var(--cyan)">C6相位调制</strong> beta/gamma嵌入60°旋转</span>
+            </li>
+            <li>
+              <span class="icon gold-icon">&#9733;</span>
+              <span><strong style="color:var(--gold)">Warm-start</strong> 黄金比0.0618熵平衡筛选</span>
+            </li>
+            <li>
+              <span class="icon gold-icon">&#9733;</span>
+              <span><strong style="color:var(--gold)">帕累托前沿</strong> 多目标Ising HV优化</span>
+            </li>
+          </ul>
+          <div class="quantum-controls">
+            <button class="quantum-control-btn active" id="btn-init" onclick="setQAOAPhase('init')">初始化</button>
+            <button class="quantum-control-btn" id="btn-cost" onclick="setQAOAPhase('cost')">成本层</button>
+            <button class="quantum-control-btn" id="btn-mixer" onclick="setQAOAPhase('mixer')">混合层</button>
+            <button class="quantum-control-btn" id="btn-warm" onclick="setQAOAPhase('warm')">Warm-start</button>
+            <button class="quantum-control-btn" id="btn-auto" onclick="toggleQAOAAuto()">自动演示</button>
+          </div>
+        </div>
+        <div class="quantum-canvas-wrapper">
+          <canvas id="quantum-canvas" width="480" height="400"></canvas>
+          <div class="layer-indicator" id="layer-indicator">
+            <div class="layer-dot active"></div>
+            <div class="layer-dot"></div>
+            <div class="layer-dot"></div>
+          </div>
+          <div class="quantum-legend">
+            <span><span class="legend-dot hadamard"></span> Hadamard (H)</span>
+            <span><span class="legend-dot rz"></span> RZ (成本)</span>
+            <span><span class="legend-dot rx"></span> RX (混合)</span>
+            <span><span class="legend-dot cnot"></span> Rzz (纠缠)</span>
+            <span><span class="legend-dot warm"></span> Warm-start</span>
           </div>
         </div>
       </div>
@@ -1474,6 +1659,356 @@
         requestAnimationFrame(animate);
       }
       animate();
+    })();
+
+    // ===== Quantum QAOA Visualization =====
+    (function() {
+      const canvas = document.getElementById('quantum-canvas');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width;
+      const H = canvas.height;
+
+      // QAOA parameters
+      const N_QUBITS = 5;
+      const N_LAYERS = 3;
+      const QUBIT_SPACING = 55;
+      const LAYER_SPACING = 110;
+      const START_X = 70;
+      const START_Y = 60;
+
+      let qaoaPhase = 'init'; // init, cost, mixer, warm
+      let qaoaTime = 0;
+      let autoPlay = false;
+      let autoPhaseIndex = 0;
+      const phases = ['init', 'cost', 'mixer', 'warm'];
+
+      // C6 phase modulation angles
+      const C6_PHASES = [0, Math.PI/3, 2*Math.PI/3];
+
+      function drawQubitLine(y, label, active) {
+        ctx.strokeStyle = active ? 'rgba(0,212,170,0.3)' : 'rgba(255,255,255,0.08)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(START_X - 20, y);
+        ctx.lineTo(W - 30, y);
+        ctx.stroke();
+
+        // Qubit label
+        ctx.font = '600 12px "JetBrains Mono", monospace';
+        ctx.fillStyle = active ? '#00d4aa' : '#8888aa';
+        ctx.textAlign = 'right';
+        ctx.fillText('|' + label + '⟩', START_X - 28, y + 4);
+      }
+
+      function drawGate(x, y, type, label, highlight) {
+        const size = 28;
+        const alpha = highlight ? 1 : 0.4;
+
+        // Gate box
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = '#1a1a3a';
+        ctx.strokeStyle = highlight ? '#00d4aa' : '#1e1e4a';
+        ctx.lineWidth = highlight ? 2 : 1;
+        ctx.fillRect(x - size/2, y - size/2, size, size);
+        ctx.strokeRect(x - size/2, y - size/2, size, size);
+
+        // Gate label
+        ctx.font = '700 11px "JetBrains Mono", monospace';
+        ctx.fillStyle = highlight ? '#00d4aa' : '#8888aa';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(label, x, y);
+
+        // Glow effect for highlight
+        if (highlight) {
+          ctx.shadowColor = '#00d4aa';
+          ctx.shadowBlur = 15;
+          ctx.strokeRect(x - size/2, y - size/2, size, size);
+          ctx.shadowBlur = 0;
+        }
+
+        ctx.globalAlpha = 1;
+        ctx.textBaseline = 'alphabetic';
+      }
+
+      function drawTwoQubitGate(x, y1, y2, label, highlight) {
+        const size = 28;
+        const alpha = highlight ? 1 : 0.4;
+
+        // Control dot
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = highlight ? '#d4a24e' : '#8888aa';
+        ctx.beginPath();
+        ctx.arc(x, y1, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Target box
+        ctx.fillStyle = '#1a1a3a';
+        ctx.strokeStyle = highlight ? '#d4a24e' : '#1e1e4a';
+        ctx.lineWidth = highlight ? 2 : 1;
+        ctx.fillRect(x - size/2, y2 - size/2, size, size);
+        ctx.strokeRect(x - size/2, y2 - size/2, size, size);
+
+        // Connection line
+        ctx.strokeStyle = highlight ? '#d4a24e' : '#8888aa';
+        ctx.lineWidth = highlight ? 2 : 1;
+        ctx.beginPath();
+        ctx.moveTo(x, y1);
+        ctx.lineTo(x, y2 - size/2);
+        ctx.stroke();
+
+        // Label
+        ctx.font = '700 10px "JetBrains Mono", monospace';
+        ctx.fillStyle = highlight ? '#d4a24e' : '#8888aa';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(label, x, y2);
+
+        if (highlight) {
+          ctx.shadowColor = '#d4a24e';
+          ctx.shadowBlur = 15;
+          ctx.strokeRect(x - size/2, y2 - size/2, size, size);
+          ctx.shadowBlur = 0;
+        }
+
+        ctx.globalAlpha = 1;
+        ctx.textBaseline = 'alphabetic';
+      }
+
+      function drawWarmStart(x, y, bits, highlight) {
+        const size = 32;
+        const alpha = highlight ? 1 : 0.4;
+
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = '#1a1a3a';
+        ctx.strokeStyle = highlight ? '#ffe66d' : '#1e1e4a';
+        ctx.lineWidth = highlight ? 2 : 1;
+
+        // Rounded rect
+        ctx.beginPath();
+        ctx.roundRect(x - size/2, y - size/2, size, size, 6);
+        ctx.fill();
+        ctx.stroke();
+
+        // Bitstring
+        ctx.font = '600 9px "JetBrains Mono", monospace';
+        ctx.fillStyle = highlight ? '#ffe66d' : '#8888aa';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(bits, x, y);
+
+        if (highlight) {
+          ctx.shadowColor = '#ffe66d';
+          ctx.shadowBlur = 15;
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+        }
+
+        ctx.globalAlpha = 1;
+        ctx.textBaseline = 'alphabetic';
+      }
+
+      function drawC6PhaseIndicator(x, y, layerIndex, highlight) {
+        const phase = C6_PHASES[layerIndex % 3];
+        const deg = Math.round(phase * 180 / Math.PI);
+
+        ctx.globalAlpha = highlight ? 0.8 : 0.3;
+        ctx.font = '600 10px "JetBrains Mono", monospace';
+        ctx.fillStyle = highlight ? '#00d4aa' : '#8888aa';
+        ctx.textAlign = 'center';
+        ctx.fillText('C6: ' + deg + '°', x, y);
+
+        // Small arc
+        ctx.strokeStyle = highlight ? '#00d4aa' : '#8888aa';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(x, y - 15, 10, -Math.PI/2, -Math.PI/2 + phase);
+        ctx.stroke();
+
+        ctx.globalAlpha = 1;
+      }
+
+      function drawLayerLabel(x, label, sublabel, highlight) {
+        ctx.globalAlpha = highlight ? 1 : 0.4;
+        ctx.font = '700 12px "Noto Sans SC", sans-serif';
+        ctx.fillStyle = highlight ? '#00d4aa' : '#8888aa';
+        ctx.textAlign = 'center';
+        ctx.fillText(label, x, 25);
+
+        if (sublabel) {
+          ctx.font = '400 10px "JetBrains Mono", monospace';
+          ctx.fillStyle = highlight ? '#d4a24e' : '#666';
+          ctx.fillText(sublabel, x, 40);
+        }
+
+        ctx.globalAlpha = 1;
+      }
+
+      function drawQAOA() {
+        ctx.clearRect(0, 0, W, H);
+
+        const qubitY = [];
+        for (let i = 0; i < N_QUBITS; i++) {
+          qubitY.push(START_Y + i * QUBIT_SPACING);
+        }
+
+        // Determine which layers to highlight based on phase
+        const showInit = qaoaPhase === 'init' || qaoaPhase === 'warm' || autoPlay;
+        const showCost = qaoaPhase === 'cost' || autoPlay;
+        const showMixer = qaoaPhase === 'mixer' || autoPlay;
+        const showWarm = qaoaPhase === 'warm' || autoPlay;
+
+        // Draw qubit lines
+        for (let i = 0; i < N_QUBITS; i++) {
+          const active = showInit || showCost || showMixer;
+          drawQubitLine(qubitY[i], 'q' + i, active);
+        }
+
+        // Layer 0: Initialization (Hadamard)
+        const x0 = START_X + 30;
+        drawLayerLabel(x0, '初始化', 'H⊗n', showInit);
+        if (showInit) {
+          for (let i = 0; i < N_QUBITS; i++) {
+            drawGate(x0, qubitY[i], 'H', 'H', true);
+          }
+        }
+
+        // Warm-start overlay (if applicable)
+        const xWarm = START_X + 80;
+        if (showWarm) {
+          drawLayerLabel(xWarm, 'Warm', 'c=0.4', true);
+          const warmBits = ['0', '1', '0', '1', '0'];
+          for (let i = 0; i < N_QUBITS; i++) {
+            drawWarmStart(xWarm, qubitY[i], warmBits[i], true);
+          }
+        }
+
+        // Layers 1-3: QAOA alternating cost and mixer
+        for (let layer = 0; layer < N_LAYERS; layer++) {
+          const xCost = START_X + 130 + layer * LAYER_SPACING;
+          const xMixer = xCost + 45;
+
+          // Cost unitary (RZ + Rzz)
+          const costHighlight = showCost && (autoPlay ? layer === (Math.floor(qaoaTime * 0.5) % N_LAYERS) : true);
+          drawLayerLabel(xCost, '成本' + (layer+1), 'γ=' + (0.5 + layer*0.1).toFixed(1), costHighlight);
+
+          if (showCost) {
+            // RZ gates on each qubit
+            for (let i = 0; i < N_QUBITS; i++) {
+              drawGate(xCost, qubitY[i], 'RZ', 'RZ', costHighlight);
+            }
+            // Rzz entangling gates (nearest neighbor)
+            for (let i = 0; i < N_QUBITS - 1; i++) {
+              drawTwoQubitGate(xCost + 20, qubitY[i], qubitY[i+1], 'ZZ', costHighlight && i === 0);
+            }
+          }
+
+          // Mixer (RX)
+          const mixerHighlight = showMixer && (autoPlay ? layer === (Math.floor(qaoaTime * 0.5) % N_LAYERS) : true);
+          drawLayerLabel(xMixer, '混合' + (layer+1), 'β=' + (0.3 + layer*0.05).toFixed(2), mixerHighlight);
+
+          if (showMixer) {
+            for (let i = 0; i < N_QUBITS; i++) {
+              drawGate(xMixer, qubitY[i], 'RX', 'RX', mixerHighlight);
+            }
+            // C6 phase modulation indicator
+            if (mixerHighlight) {
+              drawC6PhaseIndicator(xMixer, qubitY[N_QUBITS-1] + 35, layer, true);
+            }
+          }
+        }
+
+        // Measurement
+        const xMeas = START_X + 130 + N_LAYERS * LAYER_SPACING + 20;
+        drawLayerLabel(xMeas, '测量', '', showInit);
+        if (showInit) {
+          for (let i = 0; i < N_QUBITS; i++) {
+            ctx.globalAlpha = 0.6;
+            ctx.fillStyle = '#8888aa';
+            ctx.beginPath();
+            ctx.arc(xMeas, qubitY[i], 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#8888aa';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(xMeas - 5, qubitY[i] - 5);
+            ctx.lineTo(xMeas + 5, qubitY[i] + 5);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+          }
+        }
+
+        // Title overlay
+        ctx.font = '700 14px "Noto Sans SC", sans-serif';
+        ctx.fillStyle = '#00d4aa';
+        ctx.textAlign = 'left';
+        ctx.globalAlpha = 0.9;
+        ctx.fillText('QAOA量子线路  p=' + N_LAYERS + '层', 15, H - 15);
+        ctx.globalAlpha = 1;
+
+        // Phase info
+        ctx.font = '400 11px "JetBrains Mono", monospace';
+        ctx.fillStyle = '#8888aa';
+        ctx.textAlign = 'right';
+        const phaseNames = {
+          'init': 'Hadamard初始化',
+          'cost': 'RZ+Rzz成本层',
+          'mixer': 'RX混合层 (C6调制)',
+          'warm': 'Warm-start种子注入'
+        };
+        ctx.fillText('当前: ' + phaseNames[qaoaPhase], W - 15, H - 15);
+      }
+
+      // Animation loop
+      function animateQAOA() {
+        qaoaTime += 0.016;
+
+        if (autoPlay) {
+          const phaseDuration = 2.0; // seconds per phase
+          const totalCycle = phaseDuration * phases.length;
+          const cycleTime = qaoaTime % totalCycle;
+          autoPhaseIndex = Math.floor(cycleTime / phaseDuration);
+          qaoaPhase = phases[autoPhaseIndex];
+
+          // Update buttons
+          phases.forEach((p, i) => {
+            const btn = document.getElementById('btn-' + p);
+            if (btn) btn.classList.toggle('active', i === autoPhaseIndex);
+          });
+
+          // Update layer indicator
+          const dots = document.querySelectorAll('#layer-indicator .layer-dot');
+          dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === (autoPhaseIndex % 3));
+          });
+        }
+
+        drawQAOA();
+        requestAnimationFrame(animateQAOA);
+      }
+
+      // Expose control functions
+      window.setQAOAPhase = function(phase) {
+        qaoaPhase = phase;
+        autoPlay = false;
+        const btn = document.getElementById('btn-auto');
+        if (btn) btn.classList.remove('active');
+
+        // Update button states
+        phases.forEach(p => {
+          const b = document.getElementById('btn-' + p);
+          if (b) b.classList.toggle('active', p === phase);
+        });
+      };
+
+      window.toggleQAOAAuto = function() {
+        autoPlay = !autoPlay;
+        const btn = document.getElementById('btn-auto');
+        if (btn) btn.classList.toggle('active', autoPlay);
+      };
+
+      // Start animation
+      animateQAOA();
     })();
   </script>
 </body>

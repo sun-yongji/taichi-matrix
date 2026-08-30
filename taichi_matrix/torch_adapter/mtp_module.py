@@ -32,6 +32,7 @@ from taichi_matrix.constants import (
     C6_ROTATION_ANGLE,
     GOLDEN_RATIO_COMPENSATION,
 )
+from taichi_matrix.device_utils import get_device
 
 
 @dataclass
@@ -75,6 +76,7 @@ class TaiChiMTPModule(nn.Module):
         self.vocab_size = vocab_size
         self.num_heads = num_heads
         self.coupling_strength = coupling_strength
+        self.device = get_device()
 
         # 6 independent prediction heads
         self.heads = nn.ModuleList(
