@@ -1,7 +1,7 @@
 """
 TaiChi MTP Module — Multi-Token Prediction PyTorch wrapper.
 
-Wraps the six-yao depth-scheduled multi-token prediction of
+Wraps the six-slot depth-scheduled multi-token prediction of
 taichi-mtp.  Six prediction heads are coupled through a C6
 coupling matrix derived from the cyclic group rotations.
 
@@ -13,10 +13,10 @@ hidden states to the vocabulary, then the coupling matrix mixes them:
 
     ŷ = C · H · W_out
 
-Depth scheduling follows the I Ching six-yao positions:
-  • Shallow  (yao 0-1): 2 heads active
-  • Medium   (yao 2-4): 4 heads active
-  • Deep     (yao 5):    all 6 heads active
+Depth scheduling follows the cyclic-group topology six-group positions:
+  • Shallow  (slot 0-1): 2 heads active
+  • Medium   (slot 2-4): 4 heads active
+  • Deep     (slot 5):    all 6 heads active
 """
 
 from __future__ import annotations

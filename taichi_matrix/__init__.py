@@ -1,10 +1,10 @@
 """
-TaiChi Matrix — Eastern Mathematics-driven AI Infrastructure Toolkit.
+TaiChi Matrix — Group-Theory-Driven AI Infrastructure Toolkit.
 
 Orchestrates 5 C6-symmetric modules:
   M1 Router  → MoE dynamic routing with entropy balance
   M2 MTP     → Multi-token prediction with hex-depthed coupling
-  M3 Quant   → Hex-yao quantization with C6 coupling groups
+  M3 Quant   → C6-coupled quantization with C6 coupling groups
   M4 HexAttn → Hexagonal diagonal attention with HexRoPE
   M5 Correct → C6 error correction with eigenmode decomposition
 

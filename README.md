@@ -1,10 +1,10 @@
 # 太极矩阵 · TaiChi Matrix
 
-> 基于 C6 六重对称群的 AI 基础设施优化工具链 · 华为云杯2026 OPC大赛
+> 基于 C6 六重对称群的 AI 基础设施优化工具链 · 2026 上海开源软件应用创新大赛
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
 [![Tests](https://img.shields.io/badge/tests-159/159-brightgreen.svg)]()
-[![License](https://img.shields.io/badge/license-CC--BY--SA--4.0-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache--2.0-green.svg)](LICENSE)
 [![Gitee Stars](https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix/badge/star.svg?theme=white)](https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix/stargazers)
 [![GitHub Stars](https://img.shields.io/github/stars/sun-yongji/taichi-matrix?style=social)](https://github.com/sun-yongji/taichi-matrix)
 
@@ -15,7 +15,7 @@
 - **M1 Router 路由引擎** (26/26测试) — C6群论三模式路由，熵平衡，扰动鲁棒rho=0.87
   https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-router
 
-- **M2 MTP 多令牌预测** (34/34测试) — 六爻深度调度，湍流耦合100:1
+- **M2 MTP 多令牌预测** (34/34测试) — 六头深度调度，湍流耦合100:1
   https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-mtp
 
 - **M3 Quant 量化器** (28/28测试) — C6耦合位宽分配，4.3x压缩/87.3%保真度
@@ -39,7 +39,7 @@
 
 ## 简介
 
-太极矩阵覆盖 MoE 路由、多 token 预测、六边形注意力、熵量化、共识校正五大功能，全部 Python 实现，CC-BY-SA-4.0 开源，pip 一键安装，适配 OPC（一人开发者）全场景。所有模块共享 C6 六重对称群数学底层：六角耦合矩阵定义信息流拓扑，不可约表示映射（omega^0 稳态 / omega^2 周期 / omega^1 全周 / omega^3 对偶），黄金比补偿因子 0.0618 用于熵平衡。
+太极矩阵覆盖 MoE 路由、多 token 预测、六边形注意力、熵量化、共识校正五大功能，全部 Python 实现，Apache-2.0 开源，pip 一键安装，适配 轻量全场景。所有模块共享 C6 六重对称群数学底层：六角耦合矩阵定义信息流拓扑，不可约表示映射（omega^0 稳态 / omega^2 周期 / omega^1 全周 / omega^3 对偶），黄金比补偿因子 0.0618 用于熵平衡。
 
 ## 安装
 
@@ -68,13 +68,9 @@
 
 - 技术白皮书（中文）：https://docs.qq.com/aio/DTldDRGpIbGdseG1H
 - Technical Whitepaper (English)：WHITEPAPER.md
-- 参赛策略：research/huawei-opc-competition-strategy.md
 
 ## 相关阅读
 
-- [技术博客：我用六边形拓扑重构了 MoE 路由](https://zhuanlan.zhihu.com/)（知乎）
-- [3分钟Demo视频](https://www.bilibili.com/)（B站）
-- [参赛复盘：一人开发者如何构建全栈AI工具链](research/huawei-opc-competition-strategy.md)
 
 ## 交流与反馈
 
@@ -84,6 +80,6 @@
 
 ## 许可
 
-CC-BY-SA-4.0 · 太极量子团队 · 2026 · 华为云杯OPC大赛
+Apache-2.0 · 太极量子团队 · 2026 · 上海开源软件应用创新大赛
 
-> **如果觉得有用，请点 ⭐ Star 支持！让更多人看到东方智慧在AI领域的应用。**
+> **如果觉得有用，请点 ⭐ Star 支持！让更多人看到群论结构在AI基础设施中的应用。**

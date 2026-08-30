@@ -1,6 +1,6 @@
 # TaiChi Matrix Technical Whitepaper v0.1.0
 
-**Eastern Mathematical Metaphysics-Driven AI Infrastructure Optimization Toolkit**
+**Group-Theory-Driven AI Infrastructure Optimization Toolkit (C6 Cyclic Symmetry)**
 
 Yongji Sun, Yi-Yu Benyuan Research Center  
 June 2026 · Apache 2.0 License
@@ -21,7 +21,7 @@ June 2026 · Apache 2.0 License
 10. [Module M6: TaiChi-Matrix Integration](#10-module-m6-taichi-matrix-integration)
 11. [Benchmark Results](#11-benchmark-results)
 12. [Installation & Usage](#12-installation--usage)
-13. [OPC Development Model](#13-opc-development-model)
+13. [Solo-Developer Engineering Model](#13-solo-developer-engineering-model)
 14. [Competition & Open Source](#14-competition--open-source)
 15. [References](#15-references)
 
@@ -29,7 +29,7 @@ June 2026 · Apache 2.0 License
 
 ## 1. Executive Summary
 
-TaiChi Matrix is an open-source AI infrastructure optimization toolkit comprising six tightly coupled yet independently deployable modules: MoE dynamic routing, multi-token prediction, hexagonal attention, entropy-aware quantization, consensus correction, and unified pipeline integration. The unifying theoretical foundation is the **C₆ cyclic symmetry group** — the six-fold cyclic group whose irreducible representations, coupling topology, and golden-ratio compensation factor provide a mathematically rigorous framework for each optimization dimension. All modules are implemented in pure Python with NumPy as the sole hard dependency, achieve 100% test coverage (159/159 tests), and deliver end-to-end inference optimization in **0.79 ms** on a 32×128 tensor at CPU. The toolkit is designed for the **OPC (One-Person Company)** paradigm, enabling a solo developer to deploy, maintain, and extend state-of-the-art AI model optimization infrastructure without heavy frameworks or distributed systems. This whitepaper presents the complete chain from group-theoretic motivation to engineering benchmarks, prepared for the Huawei Cloud Cup 2026 OPC Innovation Competition.
+TaiChi Matrix is an open-source AI infrastructure optimization toolkit comprising six tightly coupled yet independently deployable modules: MoE dynamic routing, multi-token prediction, hexagonal attention, entropy-aware quantization, consensus correction, and unified pipeline integration. The unifying theoretical foundation is the **C₆ cyclic symmetry group** — the six-fold cyclic group whose irreducible representations, coupling topology, and golden-ratio compensation factor provide a mathematically rigorous framework for each optimization dimension. All modules are implemented in pure Python with NumPy as the sole hard dependency, achieve 100% test coverage (159/159 tests), and deliver end-to-end inference optimization in **0.79 ms** on a 32×128 tensor at CPU. The toolkit is designed for solo developers, enabling one person to deploy, maintain, and extend state-of-the-art AI model optimization infrastructure without heavy frameworks or distributed systems. This whitepaper presents the complete chain from group-theoretic motivation to engineering benchmarks, prepared for the 2026 Shanghai Open Source Software Application Innovation Competition.
 
 ---
 
@@ -50,7 +50,7 @@ Modern large language models (LLMs) and transformer architectures face a constel
 We observe that these five optimization dimensions share a deep structural parallelism with the six-fold cyclic group C₆. The six rotational symmetries (0°, 60°, 120°, 180°, 240°, 300°) map naturally onto:
 
 1. **Routing modes** (three expert patterns via quotient groups of C₆)
-2. **Prediction depth levels** (six depth tiers via Yao line progression)
+2. **Prediction depth levels** (six depth tiers via slot line progression)
 3. **Attention topology** (hexagonal tiling via C₆ geometric phases)
 4. **Bit-width allocation** (coupling-strength-driven quantization via C₆ eigenvalue spectra)
 5. **Consensus correction** (six-iteration eigenmode decomposition via C₆ irreducible representations)
@@ -126,7 +126,7 @@ The TaiChi Matrix toolkit follows a **six-station modular architecture** where e
 ┌─────────┐┌────────┐┌────────┐┌────────┐┌────────┐┌──────────┐
 │  M1     ││  M2    ││  M3    ││  M4    ││  M5    ││  M6      │
 │ Router  ││  MTP   ││ Quant  ││ HexAttn││ Correct││ Integrate│
-│ C₆ Route││Yao Dept││Entropy ││Hex Topo││Eigen   ││  CI/CD   │
+│ C₆ Route││slot Dept││Entropy ││Hex Topo││Eigen   ││  CI/CD   │
 └────┬────┘└───┬────┘└───┬────┘└───┬────┘└───┬────┘└──────────┘
      │         │         │         │         │
      ▼         ▼         ▼         ▼         ▼
@@ -195,29 +195,29 @@ The 20.5% entropy reduction (1.47 vs. 1.85) indicates significantly sharper rout
 
 ### 6.1 Core Innovation
 
-Existing Multi-Token Prediction (MTP) implementations (e.g., DeepSeek-V3) use fixed prediction depths. TaiChi-MTP constructs an **adaptive six-depth scheduling mechanism** inspired by the six Yao line positions of the I Ching hexagram, where each depth level corresponds to one Yao position.
+Existing Multi-Token Prediction (MTP) implementations (e.g., DeepSeek-V3) use fixed prediction depths. TaiChi-MTP constructs an **adaptive six-depth scheduling mechanism** based on the six element positions of the C6 cyclic group, where each depth level corresponds to one group element.
 
 ### 6.2 Three Depth Tiers via Normalized Entropy
 
 | Tier | Depth Range | Normalized Entropy | Character |
 |:---:|:---:|:---:|---|
-| **Shallow Yao** | 1 | $H < 0.90$ | High certainty; single-step prediction suffices |
-| **Middle Yao** | 2–4 | $0.90 \leq H \leq 0.97$ | Moderate uncertainty; progressive refinement |
-| **Deep Yao** | 5–6 | $H > 0.97$ | High uncertainty; full six-depth inference required |
+| **Shallow slot** | 1 | $H < 0.90$ | High certainty; single-step prediction suffices |
+| **Middle slot** | 2–4 | $0.90 \leq H \leq 0.97$ | Moderate uncertainty; progressive refinement |
+| **Deep slot** | 5–6 | $H > 0.97$ | High uncertainty; full six-depth inference required |
 
-### 6.3 Six-Yao Coupling Mechanism
+### 6.3 Six-slot Coupling Mechanism
 
-Each MTP prediction head is treated as one Yao line. Inter-head coupling coefficients follow the Yao Cheng-Cheng-Bi-Ying (承乘比应) relationships:
+Each MTP prediction head is treated as one slot line. Inter-head coupling coefficients follow the slot Cheng-Cheng-Bi-Ying (承乘比应) relationships:
 
 $$c_{ij} = \frac{1}{6}\left|\sum_{k=1}^{6} \omega^{k(i-j)}\right|, \quad \omega = e^{i\pi/3}$$
 
-**Key finding**: Under turbulent mode ($H > 0.97$), head coupling disparity reaches **100:1** — certain head pairs exhibit coupling intensity 100× stronger than others. Standard MTP achieves only **10:1** disparity. This means six-Yao scheduling extracts **10× finer structural information** from high-entropy inputs than standard methods.
+**Key finding**: Under turbulent mode ($H > 0.97$), head coupling disparity reaches **100:1** — certain head pairs exhibit coupling intensity 100× stronger than others. Standard MTP achieves only **10:1** disparity. This means six-slot scheduling extracts **10× finer structural information** from high-entropy inputs than standard methods.
 
 ### 6.4 Technical Properties
 
 - **Entropy-adaptive thresholds**: 0.90 (shallow → middle), 0.97 (middle → deep)
 - **Zero-variance protection**: Uniform coupling when input variance $< 10^{-8}$
-- **Head count**: 6 (isomorphic to six Yao positions)
+- **Head count**: 6 (isomorphic to six group positions)
 - **Test cases**: **34/34** passing
 
 ---
@@ -347,7 +347,7 @@ Input Tensor
 └──────┬──────┘
        ▼
 ┌─────────────┐
-│ M2: MTP      │  Six-Yao adaptive depth scheduling
+│ M2: MTP      │  Six-slot adaptive depth scheduling
 └──────┬──────┘
        ▼
 ┌─────────────┐
@@ -485,40 +485,40 @@ corrected = corrector.correct(logits)
 
 ---
 
-## 13. OPC Development Model
+## 13. Solo-Developer Engineering Model
 
-### 13.1 One-Person Company Architecture
+### 13.1 Lightweight Solo Architecture
 
-TaiChi Matrix is entirely developed and maintained by a **single developer** using the **OpenClaw AI platform** as the full-stack development assistant. This OPC development model demonstrates that:
+TaiChi Matrix is entirely developed and maintained by a **single developer** using the **OpenClaw AI platform** as the full-stack development assistant. This solo-developer model demonstrates that:
 
 - **AI-assisted development** can produce production-quality, well-tested software infrastructure without a traditional engineering team.
 - **Commit history serves as usage evidence**: Every code change, test case, and documentation update is traceable through the AI-human collaboration log.
 - **Rapid iteration**: Six independent repositories (Router, MTP, Quant, Hex, Correct, Matrix) were developed, tested, and deployed in a single development cycle.
 
-### 13.2 OpenClaw Full-Process Development
+### 13.2 AI-Assisted Full-Process Development
 
-The entire TaiChi Matrix codebase — from mathematical formulation to Python implementation, test case design, documentation writing, CI/CD configuration, and multi-platform repository management — was completed with OpenClaw's AI agent platform:
+The entire TaiChi Matrix codebase — from mathematical formulation to Python implementation, test case design, documentation writing, CI/CD configuration, and multi-platform repository management — was completed with an AI agent platform (OpenClaw):
 
 - **Code generation**: C₆ group-theoretic algorithms translated from mathematical notation to NumPy implementations.
 - **Test engineering**: 159 test cases designed and verified through iterative agent-human review.
-- **Documentation**: Technical whitepapers, README files, and competition strategy documents generated and refined.
+- **Documentation**: Technical whitepapers, README files, and documentation generated and refined.
 - **Repository management**: Six Gitee repositories + six GitHub mirrors created, synchronized, and maintained.
 
 ---
 
 ## 14. Competition & Open Source
 
-### 14.1 Huawei Cloud Cup 2026 OPC Innovation Competition
+### 14.1 2026 Shanghai Open Source Software Application Innovation Competition
 
-TaiChi Matrix is submitted as an entry to the **Huawei Cloud Cup 2026 AI OPC Application Innovation Competition** (华为云杯2026人工智能OPC应用创新大赛), demonstrating:
+TaiChi Matrix is submitted as an entry to the **2026 Shanghai Open Source Software Application Innovation Competition** (2026上海开源软件应用创新大赛·开源AI工具赛道), demonstrating:
 
 | Competition Dimension | TaiChi Matrix Strength |
 |:---|---|
 | **Innovation & Usability (25 pts)** | C₆ group-theoretic framework — no comparable approach exists; modular composable architecture |
-| **Technical Architecture (25 pts)** | OPC lightweight design + OpenClaw-native development + modular lazy import + 159/159 tests |
+| **Technical Architecture (25 pts)** | Lightweight design + AI-assisted development + modular lazy import + 159/159 tests |
 | **Functional Completeness (25 pts)** | One-line pip install + 6 independently runnable modules + complete API documentation |
 | **Commercial Potential (25 pts)** | Open-source community traction + AI infrastructure optimization market + ideal for independent developers |
-| **Agent Intelligence (10 pts)** | Full OpenClaw development lifecycle; commit history = AI-human collaboration evidence |
+| **Agent Intelligence (10 pts)** | Full AI-assisted development lifecycle; commit history = AI-human collaboration evidence |
 
 ### 14.2 Open Source
 
@@ -531,7 +531,7 @@ TaiChi Matrix is submitted as an entry to the **Huawei Cloud Cup 2026 AI OPC App
 | Repository | Module | Description |
 |:---|:---:|---|
 | taichi-router | M1 | C₆ group-theoretic MoE routing |
-| taichi-mtp | M2 | Six-Yao adaptive depth MTP |
+| taichi-mtp | M2 | Six-slot adaptive depth MTP |
 | taichi-quant | M3 | C₆ coupling-aware entropy quantization |
 | taichi-hex | M4 | Hexagonal topology attention |
 | taichi-correct | M5 | C₆ eigenmode consensus correction |
@@ -557,7 +557,7 @@ TaiChi Matrix is submitted as an entry to the **Huawei Cloud Cup 2026 AI OPC App
 
 7. **Vaswani, A. et al.** (2017). "Attention Is All You Need." — Foundational transformer architecture and causal attention masking.
 
-8. **I Ching (易经)**. — Six-Yao (六爻) system providing the six-depth scheduling metaphor mapped to C₆ irreducible representations.
+8. **C₆ Cyclic Group**. — Six-element cyclic structure providing the depth-scheduling framework via irreducible representations.
 
 9. **Shafer, R. & Vovk, V.** (2008). "A Tutorial on Conformal Prediction." — Theoretical basis for the conformal confidence metric used in M5 Correct.
 
@@ -565,4 +565,4 @@ TaiChi Matrix is submitted as an entry to the **Huawei Cloud Cup 2026 AI OPC App
 
 ---
 
-*This document is prepared for the Huawei Cloud Cup 2026 OPC Innovation Competition. TaiChi Matrix is open-source under the Apache 2.0 License. For inquiries, contact the Yi-Yu Benyuan Research Center.*
+*This document is prepared for the 2026 Shanghai Open Source Software Application Innovation Competition. TaiChi Matrix is open-source under the Apache 2.0 License. For inquiries, contact the Yi-Yu Benyuan Research Center.*

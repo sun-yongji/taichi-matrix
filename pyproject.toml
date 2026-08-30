@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "taichi-matrix"
 version = "0.1.0"
-description = "TaiChi Matrix: Eastern Mathematics-driven AI Infrastructure Toolkit (CCF OSS 2026)"
+description = "TaiChi Matrix: Group-Theory-Driven AI Infrastructure Toolkit (C6 cyclic symmetry)"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
