@@ -3,7 +3,7 @@
 **Group-Theory-Driven AI Infrastructure Optimization Toolkit (C6 Cyclic Symmetry)**
 
 Yongji Sun, Yi-Yu Benyuan Research Center  
-June 2026 · Apache 2.0 License
+June 2026 · CC-BY-SA-4.0 License
 
 ---
 
@@ -522,7 +522,7 @@ TaiChi Matrix is submitted as an entry to the **2026 Shanghai Open Source Softwa
 
 ### 14.2 Open Source
 
-- **License**: Apache 2.0
+- **License**: CC-BY-SA-4.0
 - **Python**: 3.9+
 - **Dependencies**: NumPy (required), PyTorch (optional)
 
@@ -565,4 +565,4 @@ TaiChi Matrix is submitted as an entry to the **2026 Shanghai Open Source Softwa
 
 ---
 
-*This document is prepared for the 2026 Shanghai Open Source Software Application Innovation Competition. TaiChi Matrix is open-source under the Apache 2.0 License. For inquiries, contact the Yi-Yu Benyuan Research Center.*
+*This document is prepared for the 2026 Shanghai Open Source Software Application Innovation Competition. TaiChi Matrix is open-source under the CC-BY-SA-4.0 License. For inquiries, contact the Yi-Yu Benyuan Research Center.*

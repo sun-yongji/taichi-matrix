@@ -67,8 +67,11 @@ class TaiChiPipeline:
     Parameters
     ----------
     enable : list of str, optional
-        Which stages to run. Default: all available.
-        Possible: "router", "mtp", "hex", "quant", "correct"
+        Which stages to execute. Default: all installed stages.
+        Possible: "router", "mtp", "hex", "quant", "correct".
+        Requested stages are executed even if their package is not
+        installed; missing packages fall back to built-in numpy
+        implementations at run time.
     router_threshold : float
         Router mode boundary (default 0.5/1.5).
     correct_threshold : float
@@ -113,7 +116,14 @@ class TaiChiPipeline:
         if enable is None:
             self.enabled = list(self.available)
         else:
-            self.enabled = [s for s in enable if s in self.available]
+            unknown = [s for s in enable if s not in self._STAGE_ORDER]
+            if unknown:
+                raise ValueError(
+                    f"Unknown stages {unknown}; "
+                    f"valid stages: {self._STAGE_ORDER}"
+                )
+            # Dedupe while preserving order
+            self.enabled = list(dict.fromkeys(enable))
 
         # Stage config
         self.router_threshold = router_threshold
@@ -371,6 +381,8 @@ class TaiChiPipeline:
             confidence=confidence,
             residue_reduction=residue_reduction,
             timings=timings,
+            # Stages actually executed (requested via `enable`;
+            # unavailable packages ran their numpy fallbacks)
             modules_available=list(self.enabled),
         )
 

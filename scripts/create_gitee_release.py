@@ -38,7 +38,7 @@ pip install taichi_matrix-0.1.0-py3-none-any.whl
 | **总计** | **159/159** | **全通过** |
 
 ### 许可
-Apache-2.0
+CC-BY-SA-4.0
 """
 
 resp = requests.post(url, auth=(USERNAME, PASSWORD), json={

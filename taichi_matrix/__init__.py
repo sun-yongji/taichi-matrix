@@ -10,7 +10,7 @@ Orchestrates 5 C6-symmetric modules:
   M4 HexAttn → Hexagonal diagonal attention with HexRoPE
   M5 Correct → C6 error correction with eigenmode decomposition
 
-CCF OSS 2026 · Apache 2.0
+CCF OSS 2026 · CC-BY-SA-4.0
 """
 
 from taichi_matrix.pipeline import TaiChiPipeline, PipelineResult

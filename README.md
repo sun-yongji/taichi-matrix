@@ -4,7 +4,7 @@
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
 [![Tests](https://img.shields.io/badge/tests-159/159-brightgreen.svg)]()
-[![License](https://img.shields.io/badge/license-Apache--2.0-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-CC--BY--SA--4.0-green.svg)](LICENSE)
 [![Gitee Stars](https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix/badge/star.svg?theme=white)](https://gitee.com/sun-yongji-yuyubenyuan_admin/taichi-matrix/stargazers)
 [![GitHub Stars](https://img.shields.io/github/stars/sun-yongji/taichi-matrix?style=social)](https://github.com/sun-yongji/taichi-matrix)
 [![GitCode](https://img.shields.io/badge/GitCode-昇腾社区-brightgreen)](https://gitcode.com/sun-yongji-yuyubenyuan_admin/taichi-matrix)
@@ -40,7 +40,7 @@
 
 ## 简介
 
-太极矩阵覆盖 MoE 路由、多 token 预测、六边形注意力、熵量化、共识校正五大功能，全部 Python 实现，Apache-2.0 开源，pip 一键安装，适配 轻量全场景。所有模块共享 C6 六重对称群数学底层：六角耦合矩阵定义信息流拓扑，不可约表示映射（omega^0 稳态 / omega^2 周期 / omega^1 全周 / omega^3 对偶），黄金比补偿因子 0.0618 用于熵平衡。
+太极矩阵覆盖 MoE 路由、多 token 预测、六边形注意力、熵量化、共识校正五大功能，全部 Python 实现，CC-BY-SA-4.0 开源，pip 一键安装，适配 轻量全场景。所有模块共享 C6 六重对称群数学底层：六角耦合矩阵定义信息流拓扑，不可约表示映射（omega^0 稳态 / omega^2 周期 / omega^1 全周 / omega^3 对偶），黄金比补偿因子 0.0618 用于熵平衡。
 
 ## 安装
 
@@ -91,6 +91,6 @@
 
 ## 许可
 
-Apache-2.0 · 太极量子团队 · 2026 · 上海开源软件应用创新大赛
+CC-BY-SA-4.0 · 太极量子团队 · 2026 · 上海开源软件应用创新大赛
 
 > **如果觉得有用，请点 ⭐ Star 支持！让更多人看到群论结构在AI基础设施中的应用。**

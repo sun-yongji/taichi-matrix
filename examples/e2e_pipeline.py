@@ -24,7 +24,7 @@ def main():
 
     print("=" * 70)
     print("  TaiChi Matrix · End-to-End C6 Pipeline")
-    print("  CCF OSS 2026 · Apache 2.0")
+    print("  CCF OSS 2026 · CC-BY-SA-4.0")
     print("=" * 70)
 
     # ------------------------------------------------------------------
