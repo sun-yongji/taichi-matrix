@@ -1,10 +1,10 @@
 """
-太极矩阵地震余震预测 API
-==========================
+太极矩阵 C6 推理服务（时序事件概率预测示例）
+============================================
 
-基于太极矩阵（TaiChi Matrix）的地震余震预测服务
+基于太极矩阵（TaiChi Matrix）的时序事件概率预测示例服务
 - 继承 C6 六重对称群的群论三模式路由
-- 内置余震序列 Båth 定律修正
+- 内置事件序列 Båth 定律修正（以余震序列为示例数据集）
 - 支持 PyTorch / NumPy 双后端
 
 启动:
@@ -95,7 +95,7 @@ def predict_aftershocks(
     use_torch: bool = False,
 ) -> AftershockResponse:
     """核心余震预测函数
-    使用太极矩阵的 C6 群论拓扑对余震序列概率做加权平滑
+    使用太极矩阵的 C6 群论拓扑对时序事件概率做加权平滑（以余震序列为示例）
     """
     t0 = time.perf_counter()
 
@@ -163,8 +163,8 @@ def predict_aftershocks(
 # ---------- FastAPI 应用 ----------
 
 app = FastAPI(
-    title="太极矩阵地震余震预测 API",
-    description="基于 C6 六重对称群的地震余震概率预测服务",
+    title="太极矩阵 C6 推理服务（时序事件概率预测示例）",
+    description="基于 C6 六重对称群拓扑的时序事件概率预测服务（以余震序列为示例数据集）",
     version="0.1.0",
 )
 
@@ -193,7 +193,7 @@ def predict_aftershock_endpoint(req: AftershockRequest) -> AftershockResponse:
 @app.get("/", tags=["meta"])
 def root():
     return {
-        "service": "太极矩阵地震余震预测 API",
+        "service": "太极矩阵 C6 推理服务",
         "version": "0.1.0",
         "endpoints": ["/health", "/predict/aftershock", "/docs"],
     }

@@ -3,7 +3,7 @@ kind: "CloudApplication"
 metadata:
   name: "taichi-matrix-aftershock-api"
   version: "0.1.0"
-  description: "太极矩阵地震余震预测 API - 基于 C6 六重对称群"
+  description: "太极矩阵 C6 推理服务 - 基于 C6 六重对称群的时序事件概率预测"
 spec:
   # 部署形态：单实例容器
   replicas: 1

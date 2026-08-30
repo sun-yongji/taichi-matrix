@@ -3,7 +3,7 @@ TaiChi HexAttention — Ascend CANN Custom Operator
 ==================================================
 
 基于C6六重对称群的六边形注意力算子
-六爻映射 · 6头并行 · 60°六边形拓扑
+6方向映射 · 6头并行 · 60°六边形拓扑
 
 Input:  x [B, N, D]  — batch, seq_len, hidden_dim
 Output: y [B, N, D]  — attended output
@@ -35,11 +35,11 @@ except ImportError:
 # C6 六重对称群常量
 # ============================================================================
 
-NUM_HEADS = 6                      # 六爻 → 6个注意力头
+NUM_HEADS = 6                      # 6个方向 → 6个注意力头
 HEX_ANGLE = math.pi / 3.0         # 60° = C6旋转角
 PHI_COMP = 0.0618                 # 黄金比补偿因子
 
-HEAD_NAMES = ["初爻", "二爻", "三爻", "四爻", "五爻", "上爻"]
+HEAD_NAMES = ["Head-0 (0°)", "Head-1 (60°)", "Head-2 (120°)", "Head-3 (180°)", "Head-4 (240°)", "Head-5 (300°)"]
 
 # C6耦合矩阵 — 六边形拓扑
 # 每个头的输出按此矩阵与其他头混合
@@ -66,7 +66,7 @@ def gen_hexagonal_mask(shape, head_id, causal=True):
 
     Args:
         shape: [B, N, D] shape 信息
-        head_id: 注意力头编号 [0,5] 对应初爻→上爻
+        head_id: 注意力头编号 [0,5] 对应 Head-0→Head-5
         causal: 因果掩码（只看过去位置）
 
     Returns:

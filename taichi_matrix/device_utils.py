@@ -18,9 +18,20 @@ from __future__ import annotations
 import logging
 from typing import Any, Optional
 
-import torch
+try:
+    import torch
+except ImportError:  # PyTorch is optional for the NumPy-only pipeline
+    torch = None
 
 logger = logging.getLogger("taichi_matrix.device")
+
+
+def _require_torch():
+    if torch is None:
+        raise ImportError(
+            "PyTorch is required for device utilities; "
+            "install it via `pip install torch` or use the NumPy backend."
+        )
 
 # ---------------------------------------------------------------------------
 # Detection
@@ -52,6 +63,7 @@ def _check_ascend() -> bool:
 def get_device() -> torch.device:
     """Auto-select device: Ascend NPU → CUDA → CPU."""
     global _DEVICE_CACHE
+    _require_torch()
     if _DEVICE_CACHE is not None:
         return _DEVICE_CACHE
 

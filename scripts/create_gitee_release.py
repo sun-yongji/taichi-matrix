@@ -30,7 +30,7 @@ pip install taichi_matrix-0.1.0-py3-none-any.whl
 | 模块 | 测试 | 核心指标 |
 |------|------|---------|
 | M1 Router 路由引擎 | 26/26 | C6群论三模式路由，熵平衡 1.47 |
-| M2 MTP 多令牌预测 | 34/34 | 六爻深度调度，湍流耦合 100:1 |
+| M2 MTP 多令牌预测 | 34/34 | 六头深度调度，湍流耦合 100:1 |
 | M3 Quant 量化器 | 28/28 | 4.3x 压缩 / 87.3% 保真度 |
 | M4 HexAttn 六边形注意力 | 26/26 | 对角线 2.56x，head 多样性 1.0 |
 | M5 Correct 误差校正 | 28/28 | 噪声降 69.7%，置信度 98% |
@@ -38,7 +38,7 @@ pip install taichi_matrix-0.1.0-py3-none-any.whl
 | **总计** | **159/159** | **全通过** |
 
 ### 许可
-CC-BY-SA-4.0
+Apache-2.0
 """
 
 resp = requests.post(url, auth=(USERNAME, PASSWORD), json={
